@@ -99,6 +99,7 @@
     <span class="l-val" id="l-val">4</span>
   </div>
 
+  <div class="hsl-display" id="hsl-display" style="font-size:13px;color:#888;text-align:center;width:100%;"></div>
   <div class="footer">色相環をクリックで選択 · L で明度調整<br><a href="https://x.com/yxmxgxn" target="_blank" style="color:#aaa;">@yxmxgxn</a></div>
 </div>
 
@@ -151,6 +152,7 @@
   function drawWheel() {
     ctx.clearRect(0, 0, W, W);
     const l = lVal / 8;
+    const grayout = lVal === 0 || lVal === 8;
 
     // ドーナツを細かいセグメントで描く
     const steps = 360;
@@ -162,7 +164,7 @@
       // 外側（高彩度）から内側（低彩度）へグラデーション
       const grad = ctx.createRadialGradient(CX, CY, R_IN, CX, CY, R_OUT);
       const [r1,g1,b1] = hslToRgb(hue, 0.0, l);
-      const [r2,g2,b2] = hslToRgb(hue, 1.0, l);
+      const [r2,g2,b2] = grayout ? hslToRgb(hue, 0.0, l) : hslToRgb(hue, 1.0, l);
       grad.addColorStop(0, `rgb(${r1},${g1},${b1})`);
       grad.addColorStop(1, `rgb(${r2},${g2},${b2})`);
 
@@ -195,11 +197,23 @@
   }
 
   function getCurrentColor() {
+    if (lVal === 0) return [0, 0, 0];
+    if (lVal === 8) return [255, 255, 255];
     const l = lVal / 8;
     const hue = (selectedAngle / (Math.PI * 2)) * 360;
     const t = (selectedRadius - R_IN) / (R_OUT - R_IN);
-    const sat = t;
+    const sat = t < 0.05 ? 0 : t; // S≒0は無彩色扱い
     return hslToRgb(hue, sat, l);
+  }
+
+  function getCurrentHSL() {
+    if (lVal === 0) return { h: 0, s: 0, l: 0 };
+    if (lVal === 8) return { h: 0, s: 0, l: 100 };
+    const hue = Math.round((selectedAngle / (Math.PI * 2)) * 360);
+    const t = (selectedRadius - R_IN) / (R_OUT - R_IN);
+    const sat = t < 0.05 ? 0 : t;
+    const l = lVal / 8;
+    return { h: hue, s: Math.round(sat * 100), l: Math.round(l * 100) };
   }
 
   function updateCodes() {
@@ -207,6 +221,9 @@
     const [r8, g8, b8] = rgbTo8rgb(r, g, b);
     document.getElementById('code8rgb').textContent = `#$${r8}${g8}${b8}`;
     document.getElementById('codeHex').textContent = toHexStr(r, g, b);
+    const { h, s, l } = getCurrentHSL();
+    const hslEl = document.getElementById('hsl-display');
+    if (hslEl) hslEl.textContent = s === 0 ? `HSL( — , — , ${l}% )` : `HSL( ${h}° , ${s}% , ${l}% )`;
   }
 
   function getAngleRadius(e) {
