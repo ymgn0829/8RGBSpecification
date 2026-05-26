@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loop HS 9 step L Color Spacification UI</title>
+<title>LoopHS 9-Step L</title>
+<meta property="og:title" content="Loop Hue Saturation 9 Step Lightness Color Space Specification Method">
+<meta property="og:image" content="https://ymgn0829.github.io/8RGBSpecification/LoopHS.png">
+<meta property="og:url" content="https://ymgn0829.github.io/8RGBSpecification/loophs.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ymgn0829.github.io/8RGBSpecification/LoopHS.png">
+<meta name="twitter:creator" content="@yxmxgxn">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,7 +25,7 @@
     padding: 24px;
   }
   .container { width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-  h1 { font-size: 13px; letter-spacing: 0.15em; color: #888; text-transform: uppercase; }
+  h1 { font-size: 14px; letter-spacing: 0.15em; color: #888; text-transform: uppercase; }
 
   .wheel-wrap { position: relative; width: 300px; height: 300px; }
   canvas { display: block; cursor: crosshair; }
@@ -36,7 +43,7 @@
   }
 
   .code-val {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     pointer-events: all;
@@ -46,7 +53,7 @@
   }
   .code-val:hover { opacity: 0.6; }
   .code-8rgb { color: #111; }
-  .code-hex { color: #555; font-size: 11px; }
+  .code-hex { color: #555; font-size: 14px; }
 
   /* Lスライダー */
   .l-row {
@@ -55,7 +62,7 @@
     align-items: center;
     gap: 10px;
   }
-  .l-label { font-size: 12px; font-weight: 700; color: #888; width: 16px; }
+  .l-label { font-size: 15px; font-weight: 700; color: #888; width: 16px; }
   .l-steps { display: flex; gap: 3px; flex: 1; }
   .l-btn {
     flex: 1;
@@ -71,12 +78,12 @@
   .l-btn.active { border: 2px solid #111; }
   .l-val { font-size: 16px; font-weight: 700; width: 20px; text-align: center; }
 
-  .footer { font-size: 11px; color: #aaa; text-align: center; }
+  .footer { font-size: 14px; color: #aaa; text-align: center; }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>Loop HS 9 step L Color Spacification UI</h1>
+  <h1>Loop HS 9 Step L Specification</h1>
 
   <div class="wheel-wrap">
     <canvas id="wheel" width="300" height="300"></canvas>
@@ -92,7 +99,7 @@
     <span class="l-val" id="l-val">4</span>
   </div>
 
-  <div class="footer">色相環をクリックで選択 · L で明度調整・Lを中心にすると純色が選べます</div>
+  <div class="footer">色相環をクリックで選択 · L で明度調整<br><a href="https://x.com/yxmxgxn" target="_blank" style="color:#aaa;">@yxmxgxn</a></div>
 </div>
 
 <script>
