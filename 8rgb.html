@@ -29,13 +29,9 @@
     padding: 24px;
   }
 
-  .container {
-    width: 100%;
-    max-width: 440px;
-  }
+  .container { width: 100%; max-width: 440px; }
 
   h1 {
-    font-family: 'Noto Sans JP', sans-serif;
     font-size: 13px;
     letter-spacing: 0.15em;
     color: var(--muted);
@@ -61,26 +57,18 @@
     justify-content: flex-end;
     padding-bottom: 8px;
     transition: background 0.1s ease;
-    cursor: default;
   }
 
-  .swatch.main {
-    flex: 2;
-    border: 2px solid #111;
-  }
+  .swatch.main { flex: 2; border: 2px solid #111; }
 
   .swatch-label {
     font-size: 10px;
-    font-family: 'Noto Sans JP', sans-serif;
-    color: rgba(0,0,0,0.35);
     font-weight: 700;
+    color: rgba(0,0,0,0.35);
   }
+  .swatch-label.light { color: rgba(255,255,255,0.6); }
 
-  .swatch-label.light {
-    color: rgba(255,255,255,0.6);
-  }
-
-  /* コード表示 */
+  /* コード */
   .codes {
     display: flex;
     flex-direction: column;
@@ -98,47 +86,16 @@
     padding: 10px 14px;
   }
 
-  .code-label {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
+  .code-label { font-size: 11px; color: var(--muted); }
 
   .code-value {
     font-size: 15px;
     font-weight: 700;
     color: var(--accent);
-    letter-spacing: 0.05em;
     cursor: pointer;
     user-select: all;
   }
-
   .code-value:hover { opacity: 0.6; }
-
-  /* チャンネル選択タブ */
-  .ch-tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  .ch-tab {
-    padding: 5px 14px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    background: var(--panel);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--muted);
-    transition: all 0.1s;
-    font-family: 'Noto Sans JP', sans-serif;
-  }
-
-  .ch-tab.active { border-color: #111; color: #111; }
-  .ch-tab.r.active { border-color: #e00; color: #e00; }
-  .ch-tab.g.active { border-color: #080; color: #080; }
-  .ch-tab.b.active { border-color: #00c; color: #00c; }
 
   /* スライダー */
   .sliders {
@@ -150,7 +107,7 @@
   .slider-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .channel-label {
@@ -159,7 +116,6 @@
     width: 16px;
     text-align: center;
   }
-
   .channel-label.r { color: #cc0000; }
   .channel-label.g { color: #006600; }
   .channel-label.b { color: #0000cc; }
@@ -177,12 +133,30 @@
     border-radius: 3px;
     cursor: pointer;
     font-size: 10px;
-    font-family: 'Noto Sans JP', sans-serif;
     transition: all 0.1s ease;
+    background: var(--panel);
   }
-
   .step-btn:hover { border-color: #999; }
   .step-btn.active { border: 2px solid #111; }
+
+  /* ◁▷ボタン */
+  .arrow-btn {
+    width: 28px;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--panel);
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+    flex-shrink: 0;
+  }
+  .arrow-btn:hover { border-color: #999; background: #eee; }
+  .arrow-btn:active { background: #ddd; }
+  .arrow-btn:disabled { opacity: 0.2; cursor: default; }
 
   .value-display {
     font-size: 18px;
@@ -197,7 +171,6 @@
     font-size: 11px;
     color: var(--muted);
     text-align: center;
-    letter-spacing: 0.05em;
   }
 </style>
 </head>
@@ -205,20 +178,12 @@
 <div class="container">
   <h1>8RGB Specification</h1>
 
-  <!-- 3分割プレビュー -->
   <div class="preview-wrap">
-    <div class="swatch" id="swatch-prev">
-      <span class="swatch-label" id="label-prev"></span>
-    </div>
-    <div class="swatch main" id="swatch-main">
-      <span class="swatch-label" id="label-main"></span>
-    </div>
-    <div class="swatch" id="swatch-next">
-      <span class="swatch-label" id="label-next"></span>
-    </div>
+    <div class="swatch" id="swatch-prev"><span class="swatch-label" id="label-prev"></span></div>
+    <div class="swatch main" id="swatch-main"><span class="swatch-label" id="label-main"></span></div>
+    <div class="swatch" id="swatch-next"><span class="swatch-label" id="label-next"></span></div>
   </div>
 
-  <!-- コード -->
   <div class="codes">
     <div class="code-row">
       <span class="code-label">8RGB</span>
@@ -230,29 +195,26 @@
     </div>
   </div>
 
-  <!-- 比較チャンネル選択 -->
-  <div class="ch-tabs">
-    <span style="font-size:11px;color:var(--muted);align-self:center;">比較軸:</span>
-    <button class="ch-tab r active" data-ch="r">R</button>
-    <button class="ch-tab g" data-ch="g">G</button>
-    <button class="ch-tab b" data-ch="b">B</button>
-  </div>
-
-  <!-- スライダー -->
   <div class="sliders">
     <div class="slider-row">
       <span class="channel-label r">R</span>
+      <button class="arrow-btn" id="dec-r">◁</button>
       <div class="steps" id="steps-r"></div>
+      <button class="arrow-btn" id="inc-r">▷</button>
       <span class="value-display" id="val-r">0</span>
     </div>
     <div class="slider-row">
       <span class="channel-label g">G</span>
+      <button class="arrow-btn" id="dec-g">◁</button>
       <div class="steps" id="steps-g"></div>
+      <button class="arrow-btn" id="inc-g">▷</button>
       <span class="value-display" id="val-g">0</span>
     </div>
     <div class="slider-row">
       <span class="channel-label b">B</span>
+      <button class="arrow-btn" id="dec-b">◁</button>
       <div class="steps" id="steps-b"></div>
+      <button class="arrow-btn" id="inc-b">▷</button>
       <span class="value-display" id="val-b">0</span>
     </div>
   </div>
@@ -283,20 +245,27 @@
   }
 
   function isLight(r, g, b) {
-    return (0.299 * toRGB255(r) + 0.587 * toRGB255(g) + 0.114 * toRGB255(b)) > 160;
+    return (0.299*toRGB255(r) + 0.587*toRGB255(g) + 0.114*toRGB255(b)) > 160;
+  }
+
+  function setCompare(ch) {
+    compareChannel = ch;
   }
 
   function update() {
     const { r, g, b } = state;
 
-    // メインコード
     document.getElementById('code8rgb').textContent = `#$${r}${g}${b}`;
     document.getElementById('codeHex').textContent = makeHex(r, g, b);
-
-    // 値表示
     document.getElementById('val-r').textContent = r;
     document.getElementById('val-g').textContent = g;
     document.getElementById('val-b').textContent = b;
+
+    // ◁▷の有効無効
+    ['r','g','b'].forEach(ch => {
+      document.getElementById(`dec-${ch}`).disabled = state[ch] === 0;
+      document.getElementById(`inc-${ch}`).disabled = state[ch] === 7;
+    });
 
     // 3分割プレビュー
     const ch = compareChannel;
@@ -304,43 +273,40 @@
     const prev = Math.max(0, cur - 1);
     const next = Math.min(7, cur + 1);
 
-    function swatchColor(val) {
-      const rr = ch === 'r' ? val : r;
-      const gg = ch === 'g' ? val : g;
-      const bb = ch === 'b' ? val : b;
-      return { rr, gg, bb };
+    function sc(val) {
+      return {
+        rr: ch==='r' ? val : r,
+        gg: ch==='g' ? val : g,
+        bb: ch==='b' ? val : b
+      };
     }
 
-    const pc = swatchColor(prev);
-    const mc = swatchColor(cur);
-    const nc = swatchColor(next);
+    const pc = sc(prev), mc = sc(cur), nc = sc(next);
 
-    const swatchPrev = document.getElementById('swatch-prev');
-    const swatchMain = document.getElementById('swatch-main');
-    const swatchNext = document.getElementById('swatch-next');
+    document.getElementById('swatch-prev').style.background = makeBg(pc.rr,pc.gg,pc.bb);
+    document.getElementById('swatch-main').style.background = makeBg(mc.rr,mc.gg,mc.bb);
+    document.getElementById('swatch-next').style.background = makeBg(nc.rr,nc.gg,nc.bb);
 
-    swatchPrev.style.background = makeBg(pc.rr, pc.gg, pc.bb);
-    swatchMain.style.background = makeBg(mc.rr, mc.gg, mc.bb);
-    swatchNext.style.background = makeBg(nc.rr, nc.gg, nc.bb);
+    function setLabel(id, text, rr, gg, bb) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = `swatch-label ${isLight(rr,gg,bb) ? '' : 'light'}`;
+    }
 
-    const labelClass = (rr, gg, bb) => isLight(rr, gg, bb) ? '' : 'light';
+    setLabel('label-prev', prev===cur ? '—' : `${ch.toUpperCase()}=${prev}`, pc.rr,pc.gg,pc.bb);
+    setLabel('label-main', `${ch.toUpperCase()}=${cur}`, mc.rr,mc.gg,mc.bb);
+    setLabel('label-next', next===cur ? '—' : `${ch.toUpperCase()}=${next}`, nc.rr,nc.gg,nc.bb);
 
-    document.getElementById('label-prev').textContent = prev === cur ? '—' : `${ch.toUpperCase()}=${prev}`;
-    document.getElementById('label-prev').className = `swatch-label ${labelClass(pc.rr, pc.gg, pc.bb)}`;
-    document.getElementById('label-main').textContent = `${ch.toUpperCase()}=${cur}`;
-    document.getElementById('label-main').className = `swatch-label ${labelClass(mc.rr, mc.gg, mc.bb)}`;
-    document.getElementById('label-next').textContent = next === cur ? '—' : `${ch.toUpperCase()}=${next}`;
-    document.getElementById('label-next').className = `swatch-label ${labelClass(nc.rr, nc.gg, nc.bb)}`;
-
-    // ステップボタン
-    ['r', 'g', 'b'].forEach(ch2 => {
+    // ステップボタン色
+    ['r','g','b'].forEach(ch2 => {
       document.querySelectorAll(`#steps-${ch2} .step-btn`).forEach(btn => {
         const v = parseInt(btn.dataset.val);
         btn.classList.toggle('active', v === state[ch2]);
-        const rr = ch2 === 'r' ? v : r;
-        const gg = ch2 === 'g' ? v : g;
-        const bb = ch2 === 'b' ? v : b;
-        btn.style.background = makeBg(rr, gg, bb);
+        btn.style.background = makeBg(
+          ch2==='r' ? v : r,
+          ch2==='g' ? v : g,
+          ch2==='b' ? v : b
+        );
       });
     });
   }
@@ -353,26 +319,26 @@
       btn.dataset.val = i;
       btn.addEventListener('click', () => {
         state[ch] = i;
+        setCompare(ch);
         update();
       });
       container.appendChild(btn);
     }
   }
 
-  ['r', 'g', 'b'].forEach(buildSteps);
+  ['r','g','b'].forEach(ch => {
+    buildSteps(ch);
 
-  // 比較チャンネル切り替え
-  document.querySelectorAll('.ch-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.ch-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      compareChannel = tab.dataset.ch;
-      update();
+    document.getElementById(`dec-${ch}`).addEventListener('click', () => {
+      if (state[ch] > 0) { state[ch]--; setCompare(ch); update(); }
+    });
+    document.getElementById(`inc-${ch}`).addEventListener('click', () => {
+      if (state[ch] < 7) { state[ch]++; setCompare(ch); update(); }
     });
   });
 
   // コピー
-  ['code8rgb', 'codeHex'].forEach(id => {
+  ['code8rgb','codeHex'].forEach(id => {
     document.getElementById(id).addEventListener('click', function() {
       navigator.clipboard.writeText(this.textContent).catch(() => {});
     });
